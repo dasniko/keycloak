@@ -91,13 +91,19 @@ public class JpaUserProvider implements UserProvider, UserCredentialStore {
     private static final char ESCAPE_BACKSLASH = '\\';
 
     private final KeycloakSession session;
-    protected EntityManager em;
-    private final JpaUserCredentialStore credentialStore;
+
+    protected final EntityManager em;
+
+    protected final JpaUserCredentialStore credentialStore;
 
     public JpaUserProvider(KeycloakSession session, EntityManager em) {
+        this(session, em, new JpaUserCredentialStore(session, em));
+    }
+
+    public JpaUserProvider(KeycloakSession session, EntityManager em, JpaUserCredentialStore credentialStore) {
         this.session = session;
         this.em = em;
-        credentialStore = new JpaUserCredentialStore(session, em);
+        this.credentialStore = credentialStore;
     }
 
     @Override

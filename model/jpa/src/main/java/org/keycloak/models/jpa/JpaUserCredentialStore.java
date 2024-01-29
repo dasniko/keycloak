@@ -89,7 +89,7 @@ public class JpaUserCredentialStore implements UserCredentialStore {
         return model;
     }
 
-    CredentialModel toModel(CredentialEntity entity) {
+    protected CredentialModel toModel(CredentialEntity entity) {
         CredentialModel model = new CredentialModel();
         model.setId(entity.getId());
         model.setType(entity.getType());
@@ -138,7 +138,7 @@ public class JpaUserCredentialStore implements UserCredentialStore {
 
     }
 
-    CredentialEntity createCredentialEntity(RealmModel realm, UserModel user, CredentialModel cred) {
+    protected CredentialEntity createCredentialEntity(RealmModel realm, UserModel user, CredentialModel cred) {
         CredentialEntity entity = new CredentialEntity();
         String id = cred.getId() == null ? KeycloakModelUtils.generateId() : cred.getId();
         entity.setId(id);
@@ -159,7 +159,7 @@ public class JpaUserCredentialStore implements UserCredentialStore {
         return entity;
     }
 
-    CredentialEntity removeCredentialEntity(RealmModel realm, UserModel user, String id) {
+    protected CredentialEntity removeCredentialEntity(RealmModel realm, UserModel user, String id) {
         CredentialEntity entity = em.find(CredentialEntity.class, id, LockModeType.PESSIMISTIC_WRITE);
         if (!checkCredentialEntity(entity, user)) return null;
 
@@ -229,7 +229,7 @@ public class JpaUserCredentialStore implements UserCredentialStore {
         return true;
     }
 
-    private boolean checkCredentialEntity(CredentialEntity entity, UserModel user) {
+    protected boolean checkCredentialEntity(CredentialEntity entity, UserModel user) {
         return entity != null && entity.getUser() != null && entity.getUser().getId().equals(user.getId());
     }
 
